@@ -1,4 +1,4 @@
-package net.lulab.dev.black;
+package net.lulab.black;
 
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.implementation.InvocationHandlerAdapter;
@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
 public class BlackReflectionUtil {
 
     private static final Map<Class<?>, Object> DEFAULT_VALUES;
+    private static final List<String> IGNORE_NAMES = Arrays.asList("class");
+    // ref. https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
 
     static {
         DEFAULT_VALUES = new HashMap<>();
@@ -34,9 +36,6 @@ public class BlackReflectionUtil {
         DEFAULT_VALUES.put(char.class, '\u0000');
         DEFAULT_VALUES.put(boolean.class, false);
     }
-    // ref. https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
-
-    private static final List<String> IGNORE_NAMES = Arrays.asList("class");
 
     @SuppressWarnings("unchecked")
     public static <T> T createDefaultValue(Class<T> type) {

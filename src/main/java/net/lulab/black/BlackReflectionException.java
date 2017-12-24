@@ -1,4 +1,4 @@
-package net.lulab.dev.black;
+package net.lulab.black;
 
 public class BlackReflectionException extends RuntimeException {
     public BlackReflectionException(String message) {

@@ -1,15 +1,14 @@
-package net.lulab.dev.black;
+package net.lulab.black;
 
-import net.lulab.dev.black.fixture.City;
-import net.lulab.dev.black.fixture.ExtendedCity;
+import net.lulab.black.fixture.City;
+import net.lulab.black.fixture.ExtendedCity;
+import net.lulab.black.fixture.User;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
-
-import net.lulab.dev.black.fixture.User;
 
 public class BlackReflectionUtilTest {
     @Test

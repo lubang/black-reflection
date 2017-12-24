@@ -1,4 +1,4 @@
-package net.lulab.dev.black.fixture;
+package net.lulab.black.fixture;
 
 public class City {
     private String name;
