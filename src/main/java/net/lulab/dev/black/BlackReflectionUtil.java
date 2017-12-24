@@ -4,15 +4,20 @@ import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.implementation.InvocationHandlerAdapter;
 import net.bytebuddy.matcher.ElementMatchers;
 
+import java.beans.BeanInfo;
+import java.beans.FeatureDescriptor;
 import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class BlackReflectionUtil {
 
@@ -30,6 +35,8 @@ public class BlackReflectionUtil {
         DEFAULT_VALUES.put(boolean.class, false);
     }
     // ref. https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html
+
+    private static final List<String> IGNORE_NAMES = Arrays.asList("class");
 
     @SuppressWarnings("unchecked")
     public static <T> T createDefaultValue(Class<T> type) {
@@ -107,5 +114,24 @@ public class BlackReflectionUtil {
         return Arrays.stream(parameterTypes)
                 .map(BlackReflectionUtil::createDefaultValue)
                 .toArray();
+    }
+
+    /**
+     * Get all bean names of the class.
+     *
+     * @param clazz Class type
+     * @return names
+     */
+    public static List<String> getBeanNames(Class<?> clazz) {
+        try {
+            final BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
+            final PropertyDescriptor[] pds = beanInfo.getPropertyDescriptors();
+            return Arrays.stream(pds)
+                    .map(FeatureDescriptor::getName)
+                    .filter(p -> !IGNORE_NAMES.contains(p))
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new BlackReflectionException(e.getMessage(), e);
+        }
     }
 }

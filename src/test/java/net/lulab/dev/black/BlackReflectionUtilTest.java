@@ -6,6 +6,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 
 import net.lulab.dev.black.fixture.User;
 
@@ -137,6 +139,32 @@ public class BlackReflectionUtilTest {
 
         // Act
         final String actual = BlackReflectionUtil.getBeanName(User.class, User::toString);
+
+        // Assert
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void get_all_bean_names_from_user() {
+        // Arrange
+        final List<String> expected = Arrays.asList("id", "name", "age", "registeredAt");
+        expected.sort(String.CASE_INSENSITIVE_ORDER);
+
+        // Act
+        final List<String> actual = BlackReflectionUtil.getBeanNames(User.class);
+
+        // Assert
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void get_all_bean_names_from_extended_class() {
+        // Arrange
+        final List<String> expected = Arrays.asList("cities", "lat", "lon", "name");
+        expected.sort(String.CASE_INSENSITIVE_ORDER);
+
+        // Act
+        final List<String> actual = BlackReflectionUtil.getBeanNames(ExtendedCity.class);
 
         // Assert
         Assert.assertEquals(expected, actual);
